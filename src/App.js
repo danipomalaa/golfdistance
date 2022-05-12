@@ -12,12 +12,19 @@ function App() {
 
   const [CurrentLocation, setCurrentLocation] = useState([])
 
-  const getCurrentLocation = ()=>{
-    navigator.geolocation.getCurrentPosition(function(position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-      setCurrentLocation([position.coords.latitude, position.coords.longitude])
-    });
+  const getCurrentLocation = async ()=>{
+    if (navigator.geolocation) {
+      console.log(navigator.geolocation)
+      alert("GeoLocation is Available!");
+      await navigator.geolocation.getCurrentPosition(function(position) {
+        console.log("Latitude is :", position.coords.latitude);
+        console.log("Longitude is :", position.coords.longitude);
+        setCurrentLocation([position.coords?.latitude, position.coords?.longitude])
+      });
+      } else {
+      alert("Sorry Not available!");
+    }
+    
   }
 
   const [HoleLocation, setHoleLocation] = useState([
@@ -128,6 +135,7 @@ function App() {
           lat: CurrentLocation[0],
           lng: CurrentLocation[1]
         };
+        console.log('CurrentLocation', CurrentLocation)
         console.log('PinLocation' + JSON.stringify(PinLocation));
         console.log('MyLocation' + JSON.stringify(MyLocation));
         const distance = Math.floor(geoDistance(PinLocation, MyLocation, "K")*1000);
